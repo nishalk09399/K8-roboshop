@@ -1,41 +1,41 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: user
+  name: cart
   namespace: roboshop
   labels: #this is deployment labels
-    app: user
+    app: cart
     tier: app
     project: roboshop
 spec:
   replicas: 1
   selector:
     matchLabels: #this labels will match with the pod
-      app: user
+      app: cart
       tier: app
       project: roboshop
   template: #this is the pod def
     metadata:
       labels:
-        app: user
+        app: cart
         tier: app
         project: roboshop
     spec:
       containers:
-      - name: user
-        image: nishaldevops/user:1.0.0
+      - name: cart
+        image: nishaldevops/cart:1.0.0
         envFrom:
         - configMapRef: 
-            name: user
+            name: cart
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: user
+  name: cart
   namespace: roboshop
 spec:
   selector:
-      app: user
+      app: cart
       tier: app
       project: roboshop
   ports:
@@ -47,8 +47,8 @@ spec:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: user
+  name: cart
 data:
-  MONGO: "true" #keep true in double quotes
   REDIS_HOST: "redis"
-  CATALOGUE_HOST=: "catalogue" #protocol//service-name:service-port/schema
+  CATALOGUE_HOST: catalogue
+  CATALOGUE_PORT: "8080"
